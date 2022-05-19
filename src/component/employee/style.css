@@ -1,0 +1,15 @@
+/* modify the header text 、 the background color  */
+.ant-table-thead > tr >th{
+    color: white;
+    background: #001529 !important;
+}
+
+.ant-table-title{
+    color: white;
+    background: #001529 !important;
+    text-align: left;
+}
+
+.ant-spin-container{
+    height: 400px;
+}
