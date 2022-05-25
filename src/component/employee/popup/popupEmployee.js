@@ -12,7 +12,24 @@ class popupEmployee extends Component {
                 name: "",
                 age: "",
                 address: ""
-            }
+            },
+
+            loading: true,
+            size: 'default'
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.type === "Create") {
+            this.setState({
+                loading: false
+            })
+        } else {
+            setTimeout(() =>
+                this.setState({
+                    loading: false
+                }), 2000
+            );
         }
     }
 
@@ -41,26 +58,32 @@ class popupEmployee extends Component {
     }
 
     render() {
+        let skeletonTemp = [];
+        for (let index = 0; index < 3; index++) {
+            skeletonTemp.push(index);
+        }
         return (
             <div>
                 <Modal
                     title={this.props.type + " Employee"}
                     visible={this.props.modal}
-                    onOk={() => this.onClickOk()}
+                    onOk={() => { this.onClickOk() }}
                     onCancel={this.props.onClickClose}
                     okButtonProps={{
                         style: {
-                            display: this.props.type === "Detail" ? "none" : null,
+                            display: this.props.type === "Detail" ? "none" : null
                         },
+                        disabled: this.state.loading ? true : false
                     }}
                     cancelButtonProps={{
                         style: {
-                            display: null,
+                            display: null
                         },
                     }}
                 >
                     <div>
                         <SimpleInput
+                            loading={this.state.loading.toString()}
                             label={"Name"}
                             name={'name'}
                             placeholder="Name"
@@ -69,8 +92,9 @@ class popupEmployee extends Component {
                             value={this.state.data.name}
                         />
                         <SimpleInputNumber
+                            loading={this.state.loading.toString()}
                             label={"Age"}
-                            mandatory={true}
+                            mandatory={"true"}
                             value={this.state.data.age}
                             placeholder="Age"
                             disabled={this.props.type === "Detail"}
@@ -78,6 +102,7 @@ class popupEmployee extends Component {
                             onChange={(e) => this.onchangeInputNumber(e, "age")}
                         />
                         <SimpleTextArea
+                            loading={this.state.loading.toString()}
                             label={"Address"}
                             name={'address'}
                             placeholder="Address"
@@ -87,7 +112,7 @@ class popupEmployee extends Component {
                             value={this.state.data.address}
                         />
                     </div>
-                </Modal>
+                </Modal >
             </div >
         )
     }

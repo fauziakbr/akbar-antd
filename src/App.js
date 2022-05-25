@@ -13,8 +13,24 @@ class App extends Component {
     super();
     this.state = {
       collapsed: false,
-      nameMenu: 'Dashboard'
+      nameMenu: 'Dashboard',
+      menuItems: [
+        {
+          key: 'Dashboard',
+          label: 'Dashboard',
+          icon: <UserOutlined />,
+        },
+        {
+          key: 'Employee',
+          label: 'Employee',
+          icon: <VideoCameraOutlined />,
+        }
+      ]
     }
+  }
+
+  menuClick = (event) => {
+    this.setState({ nameMenu: event.key })
   }
 
   render() {
@@ -36,25 +52,19 @@ class App extends Component {
               <Menu
                 theme="dark"
                 mode="inline"
-                defaultSelectedKeys={['1']}
-                // defaultOpenKeys={['2']}
-              >
-                <Menu.Item key="1" icon={<UserOutlined />} onClick={() => { this.setState({ nameMenu: "Dashboard" }) }}>
-                  Dashboard
-                </Menu.Item>
-                <Menu.Item key="2" icon={<VideoCameraOutlined />} onClick={() => { this.setState({ nameMenu: "Employee" }) }}>
-                  Employee
-                </Menu.Item>
-              </Menu>
+                defaultSelectedKeys={['Dashboard']}
+                items={this.state.menuItems}
+                onClick={(e) => { this.menuClick(e) }}
+              />
             </Sider>
-            <Layout className="site-layout" style={{ marginLeft: 200 }}>
+            <Layout className="site-layout" style={{ marginLeft: 200, height: "550px" }}>
               <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                 <div className="" style={{ padding: 24, textAlign: 'center' }}>
                   {this.state.nameMenu === "Dashboard" && <Dashboard menuName={'Dashboard'} />}
                   {this.state.nameMenu === "Employee" && <Employee menuName={'Employee'} />}
                 </div>
               </Content>
-              <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+              {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Gobang</Footer> */}
             </Layout>
           </Layout>
         </div>

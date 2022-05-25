@@ -76,19 +76,43 @@ class employee extends Component {
                 },
             ],
             dataIndex: null,
+            openModalCreate: false,
             openModal: false,
             type: '',
 
             limit: 5,
-            currentPage: 1
+            currentPage: 1,
+
+            loading: true
         }
     }
 
+    componentDidMount() {
+        setTimeout(() =>
+            this.setState({
+                loading: false
+            }), 1000
+        );
+    }
+
     showModal(type, index) {
+        if (type === "Create") {
+            this.setState({
+                openModalCreate: !this.state.openModalCreate,
+                type: type
+            })
+        } else {
+            this.setState({
+                openModal: !this.state.openModal,
+                dataIndex: (this.state.currentPage - 1) * this.state.limit + index,
+                type: type
+            })
+        }
+    };
+
+    closeModalCreate = () => {
         this.setState({
-            openModal: !this.state.openModal,
-            dataIndex: (this.state.currentPage - 1) * this.state.limit + index,
-            type: type
+            openModalCreate: !this.state.openModalCreate,
         })
     };
 
@@ -132,6 +156,14 @@ class employee extends Component {
     render() {
         return (
             <div>
+                <div style={{ textAlign: "start" }}>
+                    <Button
+                        style={{ marginBottom: 16, backgroundColor: "#001529", color: "white" }}
+                        onClick={() => { this.showModal("Create") }}
+                    >
+                        Add a row
+                    </Button>
+                </div>
                 <Table
                     columns={this.columns}
                     dataSource={this.state.data}
@@ -150,6 +182,14 @@ class employee extends Component {
                 />
 
                 <div>
+                    {this.state.openModalCreate &&
+                        <PopupEmployee
+                            modal={this.state.openModalCreate}
+                            type={this.state.type}
+                            onClickClose={this.closeModalCreate}
+                        />
+                    }
+
                     {this.state.openModal &&
                         <PopupEmployee
                             modal={this.state.openModal}

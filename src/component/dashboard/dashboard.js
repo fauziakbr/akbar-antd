@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Col, Row, Space } from 'antd';
+import { Card, Col, Row, Skeleton } from 'antd';
 
 class dashboard extends Component {
     constructor(props) {
@@ -22,19 +22,34 @@ class dashboard extends Component {
                     name: "Ricky",
                     description: "bantuin belajar ant desain pertama kali biar bisa, makanya masih coba-coba"
                 }
-            ]
+            ],
+            loading: true
         }
     }
+
+    componentDidMount() {
+        setTimeout(() =>
+            this.setState({
+                loading: false
+            }), 1000
+        );
+    }
+
+    onChange = checked => {
+        this.setState({ loading: !checked });
+    };
 
     cardRender() {
         return this.state.data.map((data, index) => {
             return (
                 <Col key={index} style={{ paddingBottom: '20px' }} span={8}>
-                    <Card title={data.name} bordered={false}>
-                        <div style={{ textAlign: 'left', fontSize: 17 }}>
-                            {data.description}
-                        </div>
-                    </Card>
+                    <Skeleton loading={this.state.loading} active>
+                        <Card title={data.name} bordered={false}>
+                            <div style={{ textAlign: 'left', fontSize: 17 }}>
+                                {data.description}
+                            </div>
+                        </Card>
+                    </Skeleton>
                 </Col>
             )
         })

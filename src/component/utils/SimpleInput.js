@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input } from "antd";
+import { Input, Skeleton } from "antd";
 
 class SimpleInput extends Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class SimpleInput extends Component {
     }
 
     render() {
-        const { label, mandatory, onChange } = this.props
+        const { label, mandatory, onChange, loading } = this.props
         return (
             <div style={{ paddingBottom: "20px" }}>
                 <div>
@@ -18,12 +18,14 @@ class SimpleInput extends Component {
                         <h4>{label} {mandatory && <span style={{ color: 'red' }}>*</span>}</h4>
                     </div>
                 </div>
-                <Input
-                    {...this.props}
-                    onChange={(e) => {
-                        e.target.value = e.target.value
-                        onChange(e)
-                    }} />
+                {loading === "true" ? <Skeleton.Input size={this.state.size} active block /> :
+                    <Input
+                        {...this.props}
+                        onChange={(e) => {
+                            e.target.value = e.target.value
+                            onChange(e)
+                        }} />
+                }
             </div>
         )
     }
