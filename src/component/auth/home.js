@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Col, Image, Layout, Row, Typography, Button } from 'antd';
+import { Col, Image, Layout, Row, Typography, Button, Form, Input, Checkbox } from 'antd';
 
-import logo from "../../assets/logo-prohace.png";
+import logo from "../../assets/playstation.png";
 import SimpleInput from "../utils/SimpleInput";
 
 const { Content } = Layout;
@@ -9,11 +9,32 @@ const { Content } = Layout;
 class Home extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            data: {
+                username: "",
+                password: ""
+            }
+        }
     }
 
     onClickButton = () => {
-        this.props.history.push("/dashboard");
+        if (this.state.data.username === "admin" && this.state.data.password === "1234") {
+            this.props.history.push("/dashboard");
+        } else {
+            alert("Wrong Username or Password")
+        }
+    }
+
+    onchangeInput = (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+
+        this.setState({
+            data: {
+                ...this.state.data,
+                [name]: value ? value : null
+            }
+        });
     }
 
     render() {
@@ -33,7 +54,7 @@ class Home extends Component {
                             <p className="txt-site txt-primary txt-12" style={{ fontStyle: 'italic' }}>Testing Form Login</p>
                         </Col>
 
-                        <Col span={8}>
+                        <Col span={7}>
                             <Image
                                 preview={false}
                                 width={150}
@@ -45,12 +66,57 @@ class Home extends Component {
                     <br />
                     <h3 style={{ color: "#004c97", textAlign: "center" }}>Testing Form Login</h3>
                     <br />
-                    <Row>
+                    <Form
+                        name="basic"
+                        labelCol={{ span: 5 }}
+                        wrapperCol={{ span: 16 }}
+                        initialValues={{ remember: true }}
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            label="Username"
+                            name="username"
+                            rules={[{ required: true, message: 'Please input your username!' }]}
+                        >
+                            <Input
+                                name="username"
+                                onChange={this.onchangeInput}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[{ required: true, message: 'Please input your password!' }]}
+                        >
+                            <Input.Password
+                                name="password"
+                                onChange={this.onchangeInput}
+                            />
+                        </Form.Item>
+
+                        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 5, span: 16 }}>
+                            <Checkbox>Remember me</Checkbox>
+                        </Form.Item>
+
+                        <Form.Item wrapperCol={{ offset: 5, span: 16 }}>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                onClick={() => { this.onClickButton() }}
+                            >
+                                LOGIN
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                    {/* <Row>
                         <Col span={24}>
                             <SimpleInput
                                 label={"Username"}
                                 name={'username'}
                                 placeholder="Username"
+                                onChange={this.onchangeInput}
+                                value={this.state.data.username}
                             />
                         </Col>
                         <Col span={24}>
@@ -58,6 +124,8 @@ class Home extends Component {
                                 label={"Password"}
                                 name={'password'}
                                 placeholder="Password"
+                                onChange={this.onchangeInput}
+                                value={this.state.data.password}
                             />
                         </Col>
                         <Button
@@ -69,7 +137,7 @@ class Home extends Component {
                         >
                             Login
                         </Button>
-                    </Row>
+                    </Row> */}
                 </Content>
             </Layout>
         )
