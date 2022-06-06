@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import SimpleInput from "../../utils/SimpleInput";
 import SimpleTextArea from "../../utils/SimpleTextArea";
 import SimpleInputNumber from "../../utils/SimpleInputNumber";
@@ -54,14 +54,32 @@ class popupEmployee extends Component {
     }
 
     onClickOk = () => {
-        this.props.onClickClose()
+        if (!this.state.data.age) {
+            alert("Age is Required.")
+        } else {
+            this.messageAlert("success")
+            if (this.props.type === "Create") {
+                this.props.newData(this.state.data)
+                this.props.onClickClose()
+            } else {
+                this.props.updateData(this.state.data)
+                this.props.onClickClose()
+            }
+        }
     }
 
-    render() {
-        let skeletonTemp = [];
-        for (let index = 0; index < 3; index++) {
-            skeletonTemp.push(index);
+    messageAlert = (type) => {
+        switch (type) {
+            case 'success':
+                return message.success('Data Saved Successfully');
+            case 'error':
+                return message.error('Data Failed to Save');
+            default:
+                return message.warning('This is a warning message');
         }
+    };
+
+    render() {
         return (
             <div>
                 <Modal
